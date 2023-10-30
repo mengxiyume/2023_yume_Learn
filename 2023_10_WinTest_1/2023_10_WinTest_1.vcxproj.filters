@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="WinTest_01_ImageLoad.c">
+    <ClCompile Include="WinTest_01_ImageLoad.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

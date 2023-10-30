@@ -1,20 +1,48 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 
-#include<Windows.h>
+#include <Windows.h>
+#include <tchar.h>
 
-HANDLE image = NULL;
+#include <GdiPlus.h>
+#pragma comment(lib, "gdiplus.lib")
+using namespace Gdiplus;
+
+HINSTANCE g_hInstance;
 
 void MessageProc_WM_CREATE(HWND hWnd)
 {
-	image = LoadImage(NULL, TEXT("./透明png测试图片.png"), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_LOADTRANSPARENT | LR_LOADMAP3DCOLORS);
+
 }
 
 void MessageProc_WM_PAINT(HWND hWnd)
 {
+	class mygdiplus
+	{
+		GdiplusStartupInput gdiplusStartupInput;
+		ULONG_PTR   gdiplusToken;
+	public:
+		mygdiplus()
+		{
+			GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
+		}
+		~mygdiplus()
+		{
+			GdiplusShutdown(gdiplusToken);
+		}
+	};
+	mygdiplus Mygdiplus;
+	//————————————————
+	//版权声明：本文为CSDN博主「qiuchangyong」的原创文章，遵循CC 4.0 BY - SA版权协议，转载请附上原文出处链接及本声明。
+	//原文链接：https ://blog.csdn.net/qiuchangyong/article/details/7790517
+
+	TCHAR szBuffer[1024] = TEXT("");
 	PAINTSTRUCT ps = { 0 };
 	HDC hdc = BeginPaint(hWnd, &ps);
 
-	
+	Image image(L"./透明png测试图片.png");
+	Graphics graphics(hdc);
+	graphics.DrawImage(&image, 0, 0);
+
 
 	EndPaint(hWnd, &ps);
 }
@@ -28,10 +56,10 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT msgID, WPARAM wParam, LPARAM lParam
 		PostMessage(hWnd, WM_QUIT, 0, 0);
 		return 0;
 	case WM_CREATE:
-
+		MessageProc_WM_CREATE(hWnd);
 		return 0;
 	case WM_PAINT:
-
+		MessageProc_WM_PAINT(hWnd);
 		return 0;
 	default:
 		return DefWindowProc(hWnd, msgID, wParam, lParam);
@@ -40,12 +68,13 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT msgID, WPARAM wParam, LPARAM lParam
 	return DefWindowProc(hWnd, msgID, wParam, lParam);
 }
 
-int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int cmdShow)
+int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int cmdShow)
 {
 	TCHAR mainWndClassName[] = TEXT("The Main Window Class");
 	TCHAR mainWndName[] = TEXT("The Window");
 	MSG userMessage = { 0 };
 	HWND hMainWindow = NULL;
+	g_hInstance = hInstance;
 
 	//注册窗口类
 	WNDCLASSEX wcEx = { 0 };
@@ -62,6 +91,8 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdL
 	hMainWindow = CreateWindowEx(WS_EX_ACCEPTFILES, mainWndClassName, mainWndName, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 1000, 500, NULL, NULL, hInstance, NULL);
 	ShowWindow(hMainWindow, SW_SHOW);
 	UpdateWindow(hMainWindow);
+
+	
 
 	//消息循环
 	while (TRUE)
