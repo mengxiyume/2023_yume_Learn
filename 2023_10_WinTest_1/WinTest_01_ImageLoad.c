@@ -2,6 +2,23 @@
 
 #include<Windows.h>
 
+HANDLE image = NULL;
+
+void MessageProc_WM_CREATE(HWND hWnd)
+{
+	image = LoadImage(NULL, TEXT("./透明png测试图片.png"), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_LOADTRANSPARENT | LR_LOADMAP3DCOLORS);
+}
+
+void MessageProc_WM_PAINT(HWND hWnd)
+{
+	PAINTSTRUCT ps = { 0 };
+	HDC hdc = BeginPaint(hWnd, &ps);
+
+	
+
+	EndPaint(hWnd, &ps);
+}
+
 LRESULT CALLBACK MainWndProc(HWND hWnd, UINT msgID, WPARAM wParam, LPARAM lParam)
 {
 	//分发消息处理
@@ -9,6 +26,12 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT msgID, WPARAM wParam, LPARAM lParam
 	{
 	case WM_DESTROY:
 		PostMessage(hWnd, WM_QUIT, 0, 0);
+		return 0;
+	case WM_CREATE:
+
+		return 0;
+	case WM_PAINT:
+
 		return 0;
 	default:
 		return DefWindowProc(hWnd, msgID, wParam, lParam);
