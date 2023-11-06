@@ -1,12 +1,83 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 
 #include <stdio.h>
+#include <stdlib.h>
+
+void Test_13()
+{
+	printf("TEST_13\n");
+
+}
+
+//打印二进制序列的奇数位与偶数位
+//获取一个整数二进制序列中所有的偶数位和奇数位，分别打印出二进制序列
+
+void Test_12()
+{
+	printf("TEST_12\n");
+
+	char szBuffer1[512] = { 0 };
+	char szBuffer2[512] = { 0 };
+
+	char bSequence[] = "1010010110100101";
+
+	int i = 0;
+	int PointBuff = 0;
+	int b1Index = 0;
+	int b2Index = 0;
+
+	printf("%s\n", bSequence);	//打印未分割的序列
+
+	//分割
+	for (i = 0; i < _countof(bSequence); i++)
+	{
+		//分割为两份
+		switch (PointBuff)
+		{
+		case 0:
+			szBuffer1[b1Index] = bSequence[i];
+			b1Index++;
+			break;
+		case 1:
+			szBuffer2[b2Index] = bSequence[i];
+			b2Index++;
+			break;
+		}
+
+		PointBuff++;
+		if (PointBuff > 1)
+		{
+			PointBuff = 0;
+		}
+	}
+	//末尾补0
+	szBuffer1[b1Index] = 0;
+	szBuffer2[b2Index] = 0;
+
+	//打印效果
+	printf("%s\n%s\n", szBuffer1, szBuffer2);
+}
+
+void Exchange(int* x, int* y)
+{
+	*x = *x ^ *y;
+	*y = *x ^ *y;
+	*x = *x ^ *y;
+}
 
 void Test_11()
 {
 	printf("TEST_11\n");
-	//再写点测试用
-	//再再写点测试用
+
+	int a = 3;
+	int b = 5;
+
+	printf("%d, %d\n", a, b);
+	
+	Exchange(&a, &b);
+
+	printf("%d, %d\n", a, b);
+
 }
 
 //求Sn = a + aa + aaa + aaaa + aaaaa的前5项之和，其中a是一个数字，
@@ -332,6 +403,9 @@ int main()
 	//Test_08();
 	//Test_09();
 	//Test_10();
-	Test_11();
+	//Test_11();
+	Test_12();
+
+
 	return 0;
 }
