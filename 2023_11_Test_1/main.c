@@ -2,11 +2,134 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
+#include <string.h>
+
+void Test_18()
+{
+	printf("TEST_18\n");
+
+}
+
+void Test_17()
+{
+	printf("TEST_17\n");
+
+
+}
+
+void Test_16()
+{
+	printf("TEST_16\n");
+	//不用下标访问数组
+
+}
+
+void Test_15()
+{
+	printf("TEST_15\n");
+	//字符串左旋
+	char ch[] = "ABCDEFG";
+
+	printf("%s\n", ch);
+
+	//左旋
+	const int count = 2;	//左旋两格
+	char szBuffer[512] = { 0 };
+	strcpy(szBuffer, ch);
+
+	size_t length = strlen(ch);
+
+	int i = 0;
+	for (i = 0; i < length; i++)
+	{
+		ch[(i + count) % (int)length] = szBuffer[i];
+	}
+
+	printf("%s\n", ch);
+
+}
+
+//void ExChange(char* c1, char* c2)
+//{
+//	char temp = *c2;
+//	*c2 = *c1;
+//	*c1 = temp;
+//}
+//
+//int main() {
+//	char szBuffer[1024] = { 0 };
+//	while (gets_s)
+//	{
+//		int left = 0;
+//		int right = strlen(szBuffer) - 1;
+//		while (left < right)
+//		{
+//			ExChange((char*)szBuffer + left, (char*)szBuffer + right);
+//			left++;
+//			right--;
+//		}
+//		printf("%s\n", szBuffer);
+//	}
+//
+//	return 0;
+//}
+
+size_t myStrlen(char* str)
+{
+	assert(str);
+
+	char* begin = str;
+	while (*str)
+		str++;
+	return str - begin;
+}
+
+void Test_14()
+{
+	printf("TEST_14\n");
+
+	printf("%zd\n", myStrlen("Hello world"));
+}
+
+int compareFunc(void* c1, void* c2)
+{
+	return (*(int*)c1) - (*(int*)c2);
+}
 
 void Test_13()
 {
 	printf("TEST_13\n");
 
+	//在一个整型数组中，只有一个数字出现一次，其他数组都是成对出现的，请找出那个只出现一次的数字。
+	//	例如：
+	//	数组中有：1 2 3 4 5 1 2 3 4，只有5出现一次，其他数字都出现2次，找出5
+
+	int arr[] = { 1, 2, 3, 4, 5, 1, 2, 3, 4 };
+	
+	int findValueSubscript = -1;
+	int i = 0;
+	qsort(arr, _countof(arr), sizeof(int), compareFunc);
+
+	int c = _countof(arr);
+
+	for (i = 1; i < _countof(arr); i++)
+	{
+		if (i % 2 == 1 && arr[i] != arr[i - 1])
+		{
+			findValueSubscript = i - 1;
+			break;
+		}
+
+	}
+	//单数数组大小末位判定
+	if (0 > findValueSubscript && _countof(arr) % 2 == 1)
+	{
+		findValueSubscript = _countof(arr) - 1;
+	}
+
+
+	findValueSubscript >= 0 ? printf("%d\n", arr[findValueSubscript]) : printf("Not single value\n");
 }
 
 //打印二进制序列的奇数位与偶数位
@@ -404,7 +527,11 @@ int main()
 	//Test_09();
 	//Test_10();
 	//Test_11();
-	Test_12();
+	//Test_12();
+	//Test_13();
+	//Test_14();
+	Test_15();
+	//Test_16();
 
 
 	return 0;
