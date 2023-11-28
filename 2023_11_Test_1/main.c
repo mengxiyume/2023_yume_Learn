@@ -5,24 +5,358 @@
 #include <assert.h>
 #include <string.h>
 
+#include "MyString.h"
+
+void Test_26()
+{
+	printf("TEST_26\n");
+
+}
+
+void Test_25()
+{
+	printf("TEST_25\n");
+
+}
+
+void Test_24()
+{
+	printf("TEST_24\n");
+
+}
+
+int IfRotateStr(const char* str1, const char* str2)
+{
+	//判断一个字符串是否为另一个字符串的旋转结果
+	assert(str1);
+	assert(str2);
+
+	size_t ln = 0;
+	if (ln = strlen(str1) != strlen(str2))
+		return 0;
+
+	int point = 0;
+	while (*str1 != str2[point] && str2[point])
+		point++;
+
+	if (!str2[point])
+		return 0;
+
+	int i = 0;
+	for (i = 0; i < ln; i++)
+	{
+		if (str1[i] != str2[(point + i) % (int)ln])
+			return 0;
+	}
+
+	return 1;
+}
+
+void Test_23()
+{
+	printf("TEST_23\n");
+
+	char str1[] = "abcdd";
+	char str2[] = "ddabc";
+	char str3[] = "ABCDD";
+
+	printf("%s\n", IfRotateStr(str1, str2) ? "是" : "否");
+	printf("%s\n", IfRotateStr(str1, str3) ? "是" : "否");
+}
+
+int findValue(int arr[], int col, int row, int k)
+{
+	int i = 0;
+	for (i = 0; i < col; i++)
+	{
+		//在每一行的首列与尾列寻找数值，如数值在区间内则遍历该区间寻找数值
+		if (arr[i * row + 0] < k && arr[i * row + row] > k)
+		{
+			int j = 0;
+			for (j = 0; i < row; j++)
+			{
+				if (arr[i * row + j] == k)
+				{
+					return 1;
+				}
+			}
+		}
+		else if (arr[i * row + 0] == k || arr[i * row + row] == k)
+		{
+			return 1;
+		}
+	}
+
+	//如完全遍历仍无结果则返回false
+	return 0;
+}
+
+void Test_22()
+{
+	printf("TEST_22\n");
+	//杨氏矩阵查找数值是否存在
+	int arr[3][3] = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+
+	printf("%s\n", findValue(arr, 3, 3, 7) ? "存在" : "不存在");
+}
+
+int GetPointValue(int x, int y)
+{
+/*
+ * 1
+ * 1  1
+ * 1  2  1
+ * 1  3  3  1
+ * 1  4  6  4  1
+ * 1  5 10 10  5  1
+ */
+	assert(x <= y);
+	assert(0 <= x || 0 <= y);
+
+	//1,1 = 1
+	//2,1 = 1;
+	//3,2 = 2,1 + 2,2
+
+
+	if (x == 1 || x == y)
+		return 1;
+	else
+		return GetPointValue(x - 1, y - 1) + GetPointValue(x, y - 1);
+}
+
+void PrintTriangle(int count)
+{
+	int i = 0;
+	for (i = 0; i < count; i++)
+	{
+		int j = 0;
+		for (j = 0; j <= i; j++)
+		{
+			printf("%d ", GetPointValue(j + 1, i + 1));
+		}
+		printf("\n");
+	}
+
+}
+
+void Test_21()
+{
+	printf("TEST_21\n");
+	//杨辉三角
+	/* 
+	 * 1
+	 * 1  1
+	 * 1  2  1
+	 * 1  3  3  1
+	 * 1  4  6  4  1
+	 * 1  5 10 10  5  1
+	 */
+
+	PrintTriangle(10);
+}
+
+void Test_20()
+{
+	printf("TEST_20\n");
+
+		//A说：不是我。
+		//B说：是C。
+		//C说：是D。
+		//D说：C在胡说
+		//已知3个人说了真话，1个人说的是假话。
+		//投票
+	
+	//abcd各被投票次数
+	int arr[4] = { 0, 0, 1, 1 };
+
+	//d的投票
+	arr[3] -= 1;
+
+	int i = 0;
+	int maxScript = 0;
+	for (i = 0; i < _countof(arr); i++)
+	{
+		if (arr[maxScript] < arr[i])
+			maxScript = i;
+	}
+
+	switch (maxScript)
+	{
+	case 0:
+		printf("a\n");
+		break;
+	case 1:
+		printf("b\n");
+		break;
+	case 2:
+		printf("c\n");
+		break;
+	case 3:
+		printf("d\n");
+		break;
+	}
+}
+
+void Test_19()
+{
+	printf("TEST_19\n");
+
+	//printf("%zd\n", MyStrlen("Hello World!"));
+	//char szBuffer[1024] = "abcdef\0**********";
+	//char szSrc[] = "abdcefgh";
+
+	//MyStrcpy(szBuffer, szSrc);
+
+	//printf("%s\n", szBuffer);
+
+	//char szCh1[] = "abcde";
+	//char szCh2[] = "abcdf";
+
+	//printf("%d\n", MyStrcmp(szCh1, szCh2));
+
+	//char szBuffer[1024] = "abc";
+	//char szCh1[] = "def";
+
+	//printf("%s\n", MyStrcat(szBuffer, szCh1));
+
+	char str[] = "this is a string";
+
+	char CHs[] = " ";
+	
+	char* ret = MyStrstr(str, CHs);
+	if (ret)
+		printf("%s\n", ret);
+	while (ret = MyStrstr(NULL, CHs))
+		printf("%s\n", ret);
+
+}
+
+void SngDobSet(int arr[], size_t sz)
+{
+	assert(arr);
+	assert(sz);
+
+	//双指针
+
+	size_t begin = 0;
+	size_t end = sz - 1;
+
+	int cur = begin;
+
+	while (begin < end)
+	{
+
+		//双指针移动
+		if (0 == arr[begin] % 2)
+		{
+			int temp = arr[begin];
+			arr[begin] = arr[end];
+			arr[end] = temp;
+			end--;
+			continue;
+		}
+		if (1 == arr[end] % 2)
+		{
+			int temp = arr[begin];
+			arr[begin] = arr[end];
+			arr[end] = temp;
+			begin++;
+			continue;
+		}
+		
+		begin++;
+		end--;
+	}
+
+
+}
+
 void Test_18()
 {
 	printf("TEST_18\n");
 
+	//输入一个整数数组，实现一个函数，
+	//	来调整该数组中数字的顺序使得数组中所有的奇数位于数组的前半部分，
+	//	所有偶数位于数组的后半部分。
+
+	int arr[] = { 2, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+	int i = 0;
+
+	for (i = 0; i < _countof(arr); i++)
+	{
+		printf("%d ", arr[i]);
+	}
+	putchar('\n');
+
+	SngDobSet(arr, _countof(arr));
+	
+	for (i = 0; i < _countof(arr); i++)
+	{
+		printf("%d ", arr[i]);
+	}
+	putchar('\n');
+}
+
+void myBubbleSort(int arr[], size_t sz)
+{
+	assert(arr);
+	assert(sz);
+	size_t end = sz;
+
+	while (end > 0)
+	{
+		int i = 0;
+		for (i = 0; i < end - 1; i++)
+		{
+			if (arr[i] > arr[i + 1])
+			{
+				int temp = arr[i + 1];
+				arr[i + 1] = arr[i];
+				arr[i] = temp;
+			}
+		}
+		end--;
+	}
 }
 
 void Test_17()
 {
+	//实现一个对整形的冒泡排序
 	printf("TEST_17\n");
+	
+	int arr[] = { 7, 6, 5, 4, 3, 2, 1 };
+	int i = 0;
 
+	for (i = 0; i < _countof(arr); i++)
+	{
+		printf("%d ", arr[i]);
+	}
+	putchar('\n');
 
+	myBubbleSort(arr, _countof(arr));
+
+	for (i = 0; i < _countof(arr); i++)
+	{
+		printf("%d ", arr[i]);
+	}
+	putchar('\n');
 }
 
 void Test_16()
 {
 	printf("TEST_16\n");
 	//不用下标访问数组
+	int i = 0;
+	int arr[10] = { 0 };
+	for (i = 0; i < 10; i++)
+	{
+		*(arr + i) = i + 1;
+	}
 
+	for (i = 0; i < 10; i++)
+	{
+		printf("%d ", *(arr + i));
+	}
 }
 
 void Test_15()
@@ -530,8 +864,19 @@ int main()
 	//Test_12();
 	//Test_13();
 	//Test_14();
-	Test_15();
+	//Test_15();
 	//Test_16();
+	//Test_17();
+	//Test_18();
+	//Test_19();
+	//Test_20();
+	//Test_21();
+	//Test_22();
+	Test_23();
+	//Test_24();
+	//Test_25();
+	//Test_26();
+	//Test_27();
 
 
 	return 0;
